@@ -76,6 +76,7 @@ const submit = (e) => {
 
   validate();
   if (valid.value) {
+    quizesService.setName(formData.name)
     router.push({ name: "Quiz", params: { id: formData.quiz } });
   }
 };

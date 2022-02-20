@@ -6,13 +6,15 @@ const state = reactive({
   quizes: [],
   questions: [],
   answers: [],
-  loading: false,
+  user: '',
+  result: [],
+  loading: 0,
 });
 
 // create http helper
 
 const request = async (url) => {
-  state.loading = true;
+  state.loading++;
 
   try {
     const res = await fetch(url);
@@ -20,14 +22,18 @@ const request = async (url) => {
   } catch (err) {
     console.error(err);
   } finally {
-    state.loading = false;
+    state.loading--;
   }
 };
 
 // create quiz service
 export const quizesService = {
+  // $ shows reactivity
   get $() {
     return state;
+  },
+  setName(name) {
+    state.user = name;
   },
   getQuizes: async () => {
     // GET Quizzes
@@ -42,6 +48,7 @@ export const quizesService = {
       `https://printful.com/test-quiz.php?action=questions&quizId=${id}`
     );
     if (data) state.questions = data;
+    console.log(data);
   },
   getAnswers: async (quizId, questionId) => {
     // GETAnswers
@@ -50,5 +57,17 @@ export const quizesService = {
       `https://printful.com/test-quiz.php?action=answers&quizId=${quizId}&questionId=${questionId}`
     );
     if (data) state.answers = data;
+    console.log(data)
+  },
+
+  submitAnswers: async (quizId, answers) => {
+    // GET Submit answers
+
+    const search = answers.map((answerId) => `answers[]=${answerId}`).join('&')
+    const data = await request(
+      `https://printful.com/test-quiz.php?action=submit&quizId=${quizId}&${search}`
+    );
+    if (data) state.result = data;
+    console.log(data)
   },
 };
