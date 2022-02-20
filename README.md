@@ -12,7 +12,5 @@ Architecture:
 
 Solution built on Vue with Sass. It is fully responsive and has minimalistic design.
 
-App has two components which connected via router configured in **router/index.js** directory. Services with fetched APIs located in **services** folder.
+App has four components which connected via router configured in **router/index.js** directory. Services with fetched APIs located in **services** folder.
 
-
-Note: project is running with hardcoded quiz options
